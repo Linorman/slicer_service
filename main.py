@@ -1,6 +1,8 @@
 import os
 
-import flask, requests, jsonify
+import flask
+from flask import request, jsonify
+
 from utils.ar_planner_control import editInputVolumePath, editInputSelector
 from utils.igt_control import addConnector, selectIO
 from utils.seg import segmentation
