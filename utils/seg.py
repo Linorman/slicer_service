@@ -11,7 +11,11 @@ def segmentation(input_path, output_path):
         "vertebrae_C5", "vertebrae_C4", "vertebrae_C3", "vertebrae_C2", "vertebrae_C1",
         "sacrum", "spinal_cord"
     ]
-    totalsegmentator(input_path, output_path, roi_subset_robust=roi_subset, ml=True)
+    ret = totalsegmentator(input_path, output_path, roi_subset_robust=roi_subset, ml=True)
+    if ret is None:
+        return False
+    else:
+        return True
 
 
 def segmentation_nii(input_img, output_img):
