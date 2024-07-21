@@ -3,29 +3,10 @@ import os
 import flask
 from flask import request, jsonify
 
-from utils.ar_planner_control import editInputVolumePath, editInputSelector
-from utils.igt_control import addConnector, selectIO
 from utils.seg import segmentation
 from utils.nii_2_obj import nii_2_obj, nrrd_2_nifti
 
 app = flask.Flask(__name__)
-
-
-@app.route('/upload', methods=['Post'])
-def upload(path):
-    return editInputVolumePath(path)
-
-
-@app.route('/createReslice', methods=['POST'])
-def createReslice():
-    return editInputSelector()
-
-
-@app.route('/initIGT', methods=['POST'])
-def initIGT():
-    tag1 = addConnector()
-    tag2 = selectIO()
-    return tag1 and tag2
 
 
 @app.route('/seg', methods=['POST'])
@@ -49,4 +30,5 @@ def seg():
 
 
 if __name__ == '__main__':
-    app.run()
+    port = 5000
+    app.run(host='0.0.0.0', port=port)

@@ -42,6 +42,8 @@ def select_tree_item(tree_view, target_text):
 
     if target_index.isValid():
         tree_view.setCurrentIndex(target_index)
+        tree_view.selectionModel().select(target_index, QItemSelectionModel.Select | QItemSelectionModel.Rows)
+        tree_view.clicked.emit(target_index)
         print(f"Item '{target_text}' selected.")
     else:
         print(f"Item '{target_text}' not found.")
