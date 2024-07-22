@@ -1,17 +1,19 @@
 import slicer
+import time
 from PythonQt.QtCore import QModelIndex, Qt
 from PythonQt.QtGui import QItemSelectionModel
-
-widget = slicer.util.getModuleWidget('OpenIGTLinkIF')
 
 
 def addConnector():
     try:
+        widget = slicer.util.getModuleWidget('OpenIGTLinkIF')
         addConnectorButton = slicer.util.findChild(widget, "AddConnectorButton")
         addConnectorButton.click()
-        prop_type = slicer.util.findChild(widget, "ConnectorServerRadioButton")
-        prop_type.setChecked(True)
+        b = slicer.mrmlScene.GetNodeByID("vtkMRMLIGTLConnectorNode1")
+        b.SetType(1)
 
+        widget = slicer.util.getModuleWidget('OpenIGTLinkIF')
+        widget.update()
         prop_status = slicer.util.findChild(widget, "ConnectorStateCheckBox")
         prop_status.setChecked(True)
 
@@ -74,8 +76,10 @@ def get_child_item_indices(tree_view, parent_index):
 
 def selectIO():
     try:
+        widget = slicer.util.getModuleWidget('OpenIGTLinkIF')
         tree = slicer.util.findChild(widget, "IOTreeView")
         target = select_tree_item(tree, "OUT")
+        widget = slicer.util.getModuleWidget('OpenIGTLinkIF')
         addBttn = slicer.util.findChild(widget, "AddNodeButton")
         addBttn.click()
         items = get_child_items(tree, target)
