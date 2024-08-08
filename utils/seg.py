@@ -53,13 +53,13 @@ def run_totalsegmentator(input_file, output_dir, roi_subset=None, task=None, use
     subprocess.run(command, check=True)
 
 
-def seg_workflow(dcm_path, obj_path):
+def seg_workflow(dcm_path, obj_path, nii_path):
     # create temp dir
     temp_dir = "../temp"
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
-    dicom_to_nifti(dcm_path, os.path.join(temp_dir, "temp.nii.gz"))
-    input_path = os.path.join(temp_dir, "temp.nii.gz")
+    dicom_to_nifti(dcm_path, nii_path)
+    input_path = nii_path
     output_path1 = os.path.join(temp_dir, "roi_subset.nii.gz")
     output_path2 = os.path.join(temp_dir, "appendicular_bones.nii.gz")
     # 运行第一个指令

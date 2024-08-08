@@ -13,7 +13,8 @@ app = flask.Flask(__name__)
 def seg():
     dcm_path = request.json['dcm_path']
     obj_path = request.json['obj_path']
-    seg_workflow(dcm_path, obj_path)
+    nii_path = request.json['nii_path']
+    seg_workflow(dcm_path, obj_path, nii_path)
     if os.path.exists(obj_path):
         return jsonify({"msg": "success"})
     else:
