@@ -75,6 +75,9 @@ def seg_workflow(dcm_path, obj_path):
     nii_list_2_obj(nii_list, temp_obj_path)
     simplify_model(temp_obj_path, obj_path)
 
+    # remove temp dir
+    os.rmdir(temp_dir)
+
 
 if __name__ == "__main__":
     input_path = "../patient1.nii.gz"
