@@ -79,22 +79,22 @@ def selectIO():
         widget = slicer.util.getModuleWidget('OpenIGTLinkIF')
         tree = slicer.util.findChild(widget, "IOTreeView")
         target = select_tree_item(tree, "OUT")
+        selector = slicer.util.findChild(widget, "NodeSelector")
+        selector.setCurrentNodeIndex(3)
         widget = slicer.util.getModuleWidget('OpenIGTLinkIF')
         addBttn = slicer.util.findChild(widget, "AddNodeButton")
         addBttn.click()
-        items = get_child_items(tree, target)
-        target2 = select_tree_item(tree, items[0])
-        model = tree.model()
-        push_on_connect_index = model.index(target2.row(), 4, target2.parent())  # 第五列，索引从0开始
-        if push_on_connect_index.isValid():
-            model.setData(push_on_connect_index, Qt.Checked, Qt.CheckStateRole)
-            tree.selectionModel().setCurrentIndex(push_on_connect_index, QItemSelectionModel.ClearAndSelect)
-            print(f"Checkbox in 'Push On Connect' column for item '{items[0]}' has been checked.")
-        else:
-            print("Push On Connect index is not valid.")
-
-        # sendBttn = slicer.util.findChild(widget, "SendButton")
-        # sendBttn.click()
+        print("IO selected")
+        # items = get_child_items(tree, target)
+        # target2 = select_tree_item(tree, items[0])
+        # model = tree.model()
+        # push_on_connect_index = model.index(target2.row(), 4, target2.parent())  # 第五列，索引从0开始
+        # if push_on_connect_index.isValid():
+        #     model.setData(push_on_connect_index, Qt.Checked, Qt.CheckStateRole)
+        #     tree.selectionModel().setCurrentIndex(push_on_connect_index, QItemSelectionModel.ClearAndSelect)
+        #     print(f"Checkbox in 'Push On Connect' column for item '{items[0]}' has been checked.")
+        # else:
+        #     print("Push On Connect index is not valid.")
 
     except Exception as e:
         print(e)

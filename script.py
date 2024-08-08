@@ -1,7 +1,7 @@
 from utils.ar_planner_control import editInputVolumePath, editInputSelector
 from utils.igt_control import addConnector, selectIO
 
-path = r"E:\Lenevo\Desktop\slicer_service\Patient001-CT_cropped.nrrd"
+path = r"E:\Lenevo\Desktop\slicer_service\patient1.nii.gz"
 ret = editInputVolumePath(path)
 if not ret:
     print("editInputVolumePath failed.")
