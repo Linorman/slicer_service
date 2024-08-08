@@ -1,4 +1,9 @@
+import os
+import subprocess
+
 from totalsegmentator.python_api import totalsegmentator
+from utils.nii_2_obj import nii_2_obj, nii_list_2_obj
+from utils.nii_2_obj import dicom_to_nifti, simplify_model
 
 
 def segmentation(input_path, output_path):
@@ -35,9 +40,6 @@ def segmentation_leg(input_path, output_path):
     ]
 
 
-import subprocess
-
-
 def run_totalsegmentator(input_file, output_dir, roi_subset=None, task=None, use_ml=True):
     command = ["TotalSegmentator", "-i", input_file, "-o", output_dir]
 
@@ -49,6 +51,29 @@ def run_totalsegmentator(input_file, output_dir, roi_subset=None, task=None, use
         command.append("--ml")
 
     subprocess.run(command, check=True)
+
+
+def seg_workflow(dcm_path, obj_path):
+    # create temp dir
+    temp_dir = "../temp"
+    if not os.path.exists(temp_dir):
+        os.makedirs(temp_dir)
+    dicom_to_nifti(dcm_path, os.path.join(temp_dir, "temp.nii.gz"))
+    input_path = os.path.join(temp_dir, "temp.nii.gz")
+    output_path1 = os.path.join(temp_dir, "roi_subset.nii.gz")
+    output_path2 = os.path.join(temp_dir, "appendicular_bones.nii.gz")
+    # 运行第一个指令
+    roi_subset = ["femur_left", "femur_right", "hip_left", "hip_right"]
+    run_totalsegmentator(input_path, output_path1, roi_subset=roi_subset)
+
+    # 运行第二个指令
+    task = "appendicular_bones"
+    run_totalsegmentator(input_path, output_path2, task=task)
+    temp_obj_path = os.path.join(temp_dir, "temp.obj")
+    # 将两个结果合并
+    nii_list = [output_path1, output_path2]
+    nii_list_2_obj(nii_list, temp_obj_path)
+    simplify_model(temp_obj_path, obj_path)
 
 
 if __name__ == "__main__":
