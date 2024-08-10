@@ -14,6 +14,11 @@ def seg():
     dcm_path = request.json['dcm_path']
     obj_path = request.json['obj_path']
     nii_path = request.json['nii_path']
+
+    # change path from ubuntu to windows
+    dcm_path = dcm_path.replace("/home", "Y:").replace("/", "\\")
+    obj_path = obj_path.replace("/home", "Y:").replace("/", "\\")
+    nii_path = nii_path.replace("/home", "Y:").replace("/", "\\")
     seg_workflow(dcm_path, obj_path, nii_path)
     if os.path.exists(obj_path):
         return jsonify({"msg": "success"})
