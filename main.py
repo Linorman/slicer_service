@@ -4,7 +4,7 @@ import flask
 from flask import request, jsonify
 
 from utils.seg import segmentation, seg_workflow
-from utils.nii_2_obj import nii_2_obj
+import logging
 
 app = flask.Flask(__name__)
 
@@ -19,6 +19,10 @@ def seg():
     dcm_path = dcm_path.replace("/home/work-temp", "Y:").replace("/", "\\")
     obj_path = obj_path.replace("/home/work-temp", "Y:").replace("/", "\\")
     nii_path = nii_path.replace("/home/work-temp", "Y:").replace("/", "\\")
+
+    logging.debug(f"DCM Path: {dcm_path}")
+    logging.debug(f"OBJ Path: {obj_path}")
+    logging.debug(f"NII Path: {nii_path}")
 
     obj_dir = os.path.dirname(obj_path)
     if not os.path.exists(obj_dir):
