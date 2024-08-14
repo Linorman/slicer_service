@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 
 from totalsegmentator.python_api import totalsegmentator
@@ -55,7 +56,7 @@ def run_totalsegmentator(input_file, output_dir, roi_subset=None, task=None, use
 
 def seg_workflow(dcm_path, obj_path, nii_path):
     # create temp dir
-    temp_dir = "../temp"
+    temp_dir = "./temp"
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
     dicom_to_nifti(dcm_path, nii_path)
@@ -80,7 +81,10 @@ def seg_workflow(dcm_path, obj_path, nii_path):
     print("simplify done")
 
     # remove temp dir
-    os.rmdir(temp_dir)
+    try:
+        shutil.rmtree(temp_dir)
+    except Exception as e:
+        print(f"Error occurred while trying to remove directory: {e}")
 
 
 if __name__ == "__main__":
