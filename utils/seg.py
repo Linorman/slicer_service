@@ -59,21 +59,25 @@ def seg_workflow(dcm_path, obj_path, nii_path):
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
     dicom_to_nifti(dcm_path, nii_path)
+    print("dicom to nii done")
     input_path = nii_path
     output_path1 = os.path.join(temp_dir, "roi_subset.nii.gz")
     output_path2 = os.path.join(temp_dir, "appendicular_bones.nii.gz")
     # 运行第一个指令
     roi_subset = ["femur_left", "femur_right", "hip_left", "hip_right"]
     run_totalsegmentator(input_path, output_path1, roi_subset=roi_subset)
+    print("roi_subset done")
 
     # 运行第二个指令
     task = "appendicular_bones"
     run_totalsegmentator(input_path, output_path2, task=task)
+    print("appendicular_bones done")
     temp_obj_path = os.path.join(temp_dir, "temp.obj")
     # 将两个结果合并
     nii_list = [output_path1, output_path2]
     nii_list_2_obj(nii_list, temp_obj_path)
     simplify_model(temp_obj_path, obj_path)
+    print("simplify done")
 
     # remove temp dir
     os.rmdir(temp_dir)
