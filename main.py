@@ -19,6 +19,15 @@ def seg():
     dcm_path = dcm_path.replace("/home/work-temp", "Y:").replace("/", "\\")
     obj_path = obj_path.replace("/home/work-temp", "Y:").replace("/", "\\")
     nii_path = nii_path.replace("/home/work-temp", "Y:").replace("/", "\\")
+
+    obj_dir = os.path.dirname(obj_path)
+    if not os.path.exists(obj_dir):
+        os.makedirs(obj_dir)
+
+    nii_dir = os.path.dirname(nii_path)
+    if not os.path.exists(nii_dir):
+        os.makedirs(nii_dir)
+
     seg_workflow(dcm_path, obj_path, nii_path)
     if os.path.exists(obj_path):
         return jsonify({"msg": "success"})
