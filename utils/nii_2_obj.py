@@ -1,9 +1,5 @@
-import os
-
 import nibabel as nib
-import nrrd
 import numpy as np
-import pydicom
 import pyvista as pv
 import vtk
 import SimpleITK as sitk
