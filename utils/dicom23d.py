@@ -118,8 +118,14 @@ def extract_and_save_surface(vtk_image, isovalue=500, output_file="output_model.
 
 # 6. 提取等值面并保存为OBJ文件
 def extract_and_save_surface_as_obj(vtk_image, isovalue=500, output_file="output_model.obj"):
-    # 提取等值面
-    marching_cubes = vtk.vtkMarchingCubes()
+    # # 提取等值面
+    # marching_cubes = vtk.vtkMarchingCubes()
+    # marching_cubes.SetInputData(vtk_image)
+    # marching_cubes.SetValue(0, isovalue)
+    # marching_cubes.Update()
+
+    # GPU acceleration
+    marching_cubes = vtk.vtkFlyingEdges3D()
     marching_cubes.SetInputData(vtk_image)
     marching_cubes.SetValue(0, isovalue)
     marching_cubes.Update()
