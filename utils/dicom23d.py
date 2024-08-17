@@ -1,6 +1,7 @@
 import SimpleITK as sitk
 import vtk
 from vtk.util import numpy_support
+import pyvista as pv
 
 
 # 1. 读取DICOM序列
@@ -139,6 +140,39 @@ def extract_and_save_surface_as_obj(vtk_image, isovalue=500, output_file="output
     print(f"Model saved as {output_file}")
 
 
+def simplify_model(input_path, output_path, reduction=0.5):
+    reader = vtk.vtkOBJReader()
+    reader.SetFileName(input_path)
+    reader.Update()
+    input_polydata = reader.GetOutput()
+
+    # 获取原始模型的面片数量
+    original_num_faces = input_polydata.GetNumberOfCells()
+    print(f"Original number of faces: {original_num_faces}")
+
+    # 清理数据
+    clean_filter = vtk.vtkCleanPolyData()
+    clean_filter.SetInputData(input_polydata)
+    clean_filter.Update()
+    clean_polydata = clean_filter.GetOutput()
+
+    # 简化模型
+    decimate = vtk.vtkQuadricDecimation()
+    decimate.SetInputData(clean_polydata)
+    decimate.SetTargetReduction(0.9)  # 设置为尽可能高的简化比例
+    decimate.Update()
+    decimated_polydata = decimate.GetOutput()
+
+    # 获取简化后模型的面片数量
+    decimated_num_faces = decimated_polydata.GetNumberOfCells()
+    print(f"Decimated number of faces: {decimated_num_faces}")
+
+    # 保存最终简化后的模型
+    pv.wrap(decimated_polydata).save(output_path)
+
+    return original_num_faces, decimated_num_faces
+
+
 def vtk_workflow(dicom_dir, output_file):
     # 读取DICOM序列
     image = read_dicom_series(dicom_dir)
@@ -154,6 +188,9 @@ def vtk_workflow(dicom_dir, output_file):
 
     # 提取等值面并保存为OBJ模型
     extract_and_save_surface_as_obj(vtk_image, isovalue=215, output_file=output_file)
+
+    # 优化模型
+    simplify_model(output_file, output_file)
 
     return output_file
 
