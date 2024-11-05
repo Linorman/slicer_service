@@ -46,8 +46,8 @@ def segVtk():
     obj_path = request.json['obj_path']
 
     # change path from ubuntu to windows
-    dcm_path = dcm_path.replace("/home/work-temp", "Y:").replace("/", "\\")
-    obj_path = obj_path.replace("/home/work-temp", "Y:").replace("/", "\\")
+    # dcm_path = dcm_path.replace("/home/work-temp", "Y:").replace("/", "\\")
+    # obj_path = obj_path.replace("/home/work-temp", "Y:").replace("/", "\\")
 
     logging.debug(f"DCM Path: {dcm_path}")
     logging.debug(f"OBJ Path: {obj_path}")
