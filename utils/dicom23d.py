@@ -51,8 +51,21 @@ def convert_itk_to_vtk(itk_image):
 
 # 5. 3D可视化使用VTK
 def visualize_vtk_image(vtk_image):
+# Apply a threshold to remove the table
+    # threshold = vtk.vtkImageThreshold()
+    # threshold.SetInputData(vtk_image)
+    # # Adjust the threshold values based on your data
+    # threshold.ThresholdBetween(-800, 4000)  # Keep values between -500 and 1000
+    # threshold.ReplaceInOn()
+    # threshold.SetInValue(1)  # Keep these values
+    # threshold.ReplaceOutOn()
+    # threshold.SetOutValue(0)  # Discard other values (the table)
+    # threshold.Update()
+    # thresholded_image = threshold.GetOutput()
+
     volume_mapper = vtk.vtkGPUVolumeRayCastMapper()
     volume_mapper.SetInputData(vtk_image)
+    # volume_mapper.SetInputData(thresholded_image)
     volume_mapper.SetBlendModeToComposite()
 
     # 设置颜色传递函数：为不同的像素值设置对应的颜色
@@ -155,7 +168,7 @@ def vtk_workflow(dicom_dir, output_file):
 # 主程序
 if __name__ == "__main__":
     # 替换为你自己的DICOM目录路径
-    dicom_directory = r"E:\Lenevo\Desktop\ct\dicom"
+    dicom_directory = r"E:\Lenevo\Desktop\workspace\ct\dicom"
 
     # 读取DICOM序列
     image = read_dicom_series(dicom_directory)
@@ -170,7 +183,7 @@ if __name__ == "__main__":
     vtk_image = convert_itk_to_vtk(filtered_image)
 
     # 可视化
-    # visualize_vtk_image(vtk_image)
+    visualize_vtk_image(vtk_image)
 
-    # 提取等值面并保存为OBJ模型
-    extract_and_save_surface_as_obj(vtk_image, isovalue=215, output_file="../simpleitk-test/output_model.obj")
+    # # 提取等值面并保存为OBJ模型
+    # extract_and_save_surface_as_obj(vtk_image, isovalue=215, output_file="../simpleitk-test/output_model.obj")
